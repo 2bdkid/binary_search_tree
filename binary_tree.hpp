@@ -1,6 +1,8 @@
 #ifndef BINARY_TREE_HPP
 #define BINARY_TREE_HPP
 
+#include <iostream>
+
 class Node {
 public:
   /// create node with key
@@ -33,6 +35,10 @@ public:
   void transplant(Node* a, Node* b);
   /// find node with key
   Node* find(int key) const;
+  /// find kth smallest element
+  Node* kth(int k) const;
+  /// write data to stream
+  friend std::ostream& operator<<(std::ostream& out, const BinaryTree& tree);
 
 private:
   /// helper method for find
@@ -193,7 +199,31 @@ Node* BinaryTree::find(int key, Node* subtree) const {
     return find(key, subtree->left);
   else
     return subtree;
-      
+}
+
+Node* BinaryTree::kth(int k) const {
+  Node* kth = minimum(root);
+  for (int i = 0; i < k-1; ++i) {
+    if (kth)
+      kth = successor(kth);
+    else
+      return kth;
+  }
+
+  // returns nullptr if kth element does not exist
+  return kth;
+}
+
+/// in-order traversal/print
+static void write(std::ostream& out, Node* node) {
+  if (!node) return;
+  write(out, node->left);
+  out << node->key << ' ';
+  write(out, node->right);
+}
+
+std::ostream& operator<<(std::ostream& out, const BinaryTree& tree) {
+  write(out, tree.root);
 }
 
 #endif
