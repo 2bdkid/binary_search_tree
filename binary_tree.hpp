@@ -57,10 +57,11 @@ void BinaryTree::remove(Node* node) {
   if (!node->left && !node->right) {
     // remove leaf node
     if (node->parent) {
-      if (node->parent->key < node->key)
+      if (node->parent->key < node->key) {
 	node->parent->right = nullptr;
-      else
+      } else {
 	node->parent->left = nullptr;
+      }
     }
     node->parent = nullptr;
   } else if (!node->left && node->right) {
@@ -97,10 +98,11 @@ Node* BinaryTree::successor(Node* node) const {
     // find parent of furthest node through right branches
     Node* iter = node;
     while (iter->parent) {
-      if (iter->parent->key < iter->key)
+      if (iter->parent->key < iter->key) {
 	iter = iter->parent;
-      else
+      } else {
 	break;
+      }
     }
 
     // will return nullptr if no successor
@@ -123,10 +125,11 @@ Node* BinaryTree::predecessor(Node* node) const {
     // find parent of furthest node through left branches
     Node* iter = node;
     while (iter->parent) {
-      if (iter->key < iter->parent->key)
+      if (iter->key < iter->parent->key) {
 	iter = iter->parent;
-      else
+      } else {
 	break;
+      }
     }
 
     // will return nullptr if no predecessor exists
@@ -135,19 +138,21 @@ Node* BinaryTree::predecessor(Node* node) const {
 }
 
 void BinaryTree::transplant(Node* a, Node* b) {
-  if (b->parent->key < b->key)
+  if (b->parent->key < b->key) {
     b->parent->right = nullptr;
-  else
+  } else {
     b->parent->left = nullptr;
+  }
 
   b->parent = a->parent;
 
   // special case when a is root
   if (a->parent) {
-    if (a->parent->key < a->key)
+    if (a->parent->key < a->key) {
       a->parent->right = b;
-    else
+    } else {
       a->parent->left = b;
+    }
   } else {
     root = b;
   }
