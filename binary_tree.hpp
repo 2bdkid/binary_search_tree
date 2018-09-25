@@ -36,7 +36,7 @@ public:
   /// find node with key
   Node* find(int key) const;
   /// find kth smallest element
-  Node* kth(int k) const;
+  Node* kth(unsigned k) const;
   /// write data to stream
   friend std::ostream& operator<<(std::ostream& out, const BinaryTree& tree);
 
@@ -201,9 +201,9 @@ Node* BinaryTree::find(int key, Node* subtree) const {
     return subtree;
 }
 
-Node* BinaryTree::kth(int k) const {
+Node* BinaryTree::kth(unsigned k) const {
   Node* kth = minimum(root);
-  for (int i = 0; i < k-1; ++i) {
+  for (unsigned i = 0; i < k-1; ++i) {
     if (kth)
       kth = successor(kth);
     else
