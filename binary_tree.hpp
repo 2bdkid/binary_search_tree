@@ -215,16 +215,18 @@ Node* BinaryTree::kth(unsigned k) const {
 }
 
 /// in-order traversal/print
-static void write(std::ostream& out, Node* node) {
-  if (!node) return;
-  write(out, node->left);
-  out << node->key << ' ';
-  write(out, node->right);
+std::ostream& operator<<(std::ostream& out, const Node& node) {
+  if (node.left)
+    out << *node.left;
+  out << node.key << ' ';
+  if (node.right)
+    out << *node.right;
+  return out;
 }
 
 std::ostream& operator<<(std::ostream& out, const BinaryTree& tree) {
-  write(out, tree.root);
-  return out;
+  if (!tree.root) return out;
+  return out << *tree.root;
 }
 
 #endif
