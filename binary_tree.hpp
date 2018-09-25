@@ -224,6 +224,7 @@ static void write(std::ostream& out, Node* node) {
 
 std::ostream& operator<<(std::ostream& out, const BinaryTree& tree) {
   write(out, tree.root);
+  return out;
 }
 
 #endif
