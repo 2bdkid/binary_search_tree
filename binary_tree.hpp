@@ -59,13 +59,16 @@ void BinaryTree::insert(Node* node) {
 
 void BinaryTree::remove(Node* node) {
   if (!node->left && !node->right) {
-    // remove leaf node
+    // special case where only node is root
     if (node->parent) {
+    // remove leaf node      
       if (node->parent->key < node->key) {
         node->parent->right = nullptr;
       } else {
         node->parent->left = nullptr;
       }
+    } else {
+      root = nullptr;
     }
     node->parent = nullptr;
   } else if (!node->left && node->right) {
