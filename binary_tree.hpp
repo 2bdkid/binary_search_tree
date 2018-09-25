@@ -21,6 +21,10 @@ public:
   void insert(Node* node);
   /// remove node with key
   void remove(Node* node);
+  /// find smallest node in subtree
+  Node* minimum(Node* node) const;
+  /// find largest node in subtree
+  Node* maximum(Node* node) const;
   /// find successor of node
   Node* successor(Node* node) const;
   /// find predecessor of node
@@ -84,16 +88,34 @@ void BinaryTree::remove(Node* node) {
   }
 }
 
+Node* BinaryTree::minimum(Node* node) const {
+  Node* parent = nullptr;
+  Node* child = node;
+
+  while (child) {
+    parent = child;
+    child = child->left;
+  }
+
+  return parent;
+}
+
+Node* BinaryTree::maximum(Node* node) const {
+  Node* parent = nullptr;
+  Node* child = node;
+
+  while (child) {
+    parent = child;
+    child = child->right;
+  }
+
+  return parent;
+}
+
 Node* BinaryTree::successor(Node* node) const {
   if (node->right) {
     // find minimum of right subtree
-    Node* parent = nullptr;
-    Node* child = node->right;
-    while (child) {
-      parent = child;
-      child = child->left;
-    }
-    return parent;
+    return minimum(node->right);
   } else {
     // find parent of furthest node through right branches
     Node* iter = node;
@@ -112,15 +134,7 @@ Node* BinaryTree::successor(Node* node) const {
 
 Node* BinaryTree::predecessor(Node* node) const {
   if (node->left) {
-    // find maximum of left subtree
-    Node* parent = nullptr;
-    Node* child = node->left;
-
-    while (child) {
-      parent = child;
-      child = child->right;
-    }
-    return parent;
+    return maximum(node->left);
   } else {
     // find parent of furthest node through left branches
     Node* iter = node;
