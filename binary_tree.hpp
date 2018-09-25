@@ -31,6 +31,12 @@ public:
   Node* predecessor(Node* node) const;
   /// replace subtree at a with subtree at b
   void transplant(Node* a, Node* b);
+  /// find node with key
+  Node* find(int key) const;
+
+private:
+  /// helper method for find
+  Node* find(int key, Node* subtree) const;
   /// pointer to the root
   Node* root = nullptr;
 };
@@ -173,6 +179,21 @@ void BinaryTree::transplant(Node* a, Node* b) {
   } else {
     root = b;
   }
+}
+
+Node* BinaryTree::find(int key) const {
+  return find(key, root);
+}
+
+Node* BinaryTree::find(int key, Node* subtree) const {
+  if (!subtree) return nullptr;
+  if (subtree->key < key)
+    return find(key, subtree->right);
+  else if (subtree->key > key)
+    return find(key, subtree->left);
+  else
+    return subtree;
+      
 }
 
 #endif
