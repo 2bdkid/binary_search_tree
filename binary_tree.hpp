@@ -58,9 +58,9 @@ void BinaryTree::remove(Node* node) {
     // remove leaf node
     if (node->parent) {
       if (node->parent->key < node->key) {
-	node->parent->right = nullptr;
+        node->parent->right = nullptr;
       } else {
-	node->parent->left = nullptr;
+        node->parent->left = nullptr;
       }
     }
     node->parent = nullptr;
@@ -99,9 +99,9 @@ Node* BinaryTree::successor(Node* node) const {
     Node* iter = node;
     while (iter->parent) {
       if (iter->parent->key < iter->key) {
-	iter = iter->parent;
+        iter = iter->parent;
       } else {
-	break;
+        break;
       }
     }
 
@@ -126,9 +126,9 @@ Node* BinaryTree::predecessor(Node* node) const {
     Node* iter = node;
     while (iter->parent) {
       if (iter->key < iter->parent->key) {
-	iter = iter->parent;
+        iter = iter->parent;
       } else {
-	break;
+        break;
       }
     }
 
