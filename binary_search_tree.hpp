@@ -2,6 +2,7 @@
 #define BINARY_SEARCH_TREE_HPP
 
 #include <iostream>
+#include <stack>
 
 struct bst {
   explicit bst(int key) : key(key) {}
@@ -20,6 +21,7 @@ struct bst {
   bst* maximum();
   bst* find(int key);
   bst* kth(unsigned k);
+  void fill_k(std::stack<bst*>& found, bst* root, unsigned k);
 };
 
 void bst::insert(bst* node) {
@@ -151,16 +153,18 @@ bst* bst::find(int k) {
   return this;
 }
 
-bst* bst::kth(unsigned k) {
-  bst* kth = minimum();
-  for (unsigned i = 0; i < k-1; ++i) {
-    if (kth)
-      kth = kth->successor();
-    else
-      return kth;
-  }
+void bst::fill_k(std::stack<bst*>& found, bst* root, unsigned k) {
+  if (root->left) fill_k(found, root->left, k);
+  if (found.size() == k) return;
+  found.push(root);
+  if (root->right) fill_k(found, root->right, k);
+}
 
-  return kth;
+bst* bst::kth(unsigned k) {
+  std::stack<bst*> found;
+  fill_k(found, this, k);
+  if (found.size() != k) return nullptr;
+  return found.top();
 }
 
 std::ostream& operator<<(std::ostream& out, const bst& tree) {
