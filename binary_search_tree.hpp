@@ -21,7 +21,7 @@ struct bst {
   bst* maximum();
   bst* find(int key);
   bst* kth(unsigned k);
-  void fill_k(std::stack<bst*>& found, bst* root, unsigned k);
+  void fill_k(std::stack<bst*>& found, unsigned k);
 };
 
 void bst::insert(bst* node) {
@@ -153,16 +153,16 @@ bst* bst::find(int k) {
   return this;
 }
 
-void bst::fill_k(std::stack<bst*>& found, bst* root, unsigned k) {
-  if (root->left) fill_k(found, root->left, k);
+void bst::fill_k(std::stack<bst*>& found, unsigned k) {
+  if (left) left->fill_k(found, k);
   if (found.size() == k) return;
-  found.push(root);
-  if (root->right) fill_k(found, root->right, k);
+  found.push(this);
+  if (right) right->fill_k(found, k);
 }
 
 bst* bst::kth(unsigned k) {
   std::stack<bst*> found;
-  fill_k(found, this, k);
+  fill_k(found, k);
   if (found.size() != k) return nullptr;
   return found.top();
 }
