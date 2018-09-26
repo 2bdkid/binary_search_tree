@@ -1,11 +1,10 @@
-#ifndef BINARY_SEARCH_TREE
-#define BINARY_SEARCH_TREE
+#ifndef BINARY_SEARCH_TREE_HPP
+#define BINARY_SEARCH_TREE_HPP
 
 #include <iostream>
 
 struct bst {
-  bst() = default;
-  bst(int key) : key(key) {}
+  explicit bst(int key) : key(key) {}
   
   int key;
   bst* parent = nullptr;
