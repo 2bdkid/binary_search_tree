@@ -17,8 +17,11 @@ public:
 
 Node::Node(int key) : key(key) {}
 
-class BinaryTree {
+class BinarySearchTree {
 public:
+  BinarySearchTree() = default;
+  /// create tree from existing nodes
+  BinarySearchTree(Node* nodes[], unsigned n);
   /// insert key into tree
   void insert(Node* node);
   /// remove node with key
@@ -38,16 +41,29 @@ public:
   /// find kth smallest element
   Node* kth(unsigned k) const;
   /// write data to stream
-  friend std::ostream& operator<<(std::ostream& out, const BinaryTree& tree);
+  friend std::ostream& operator<<(std::ostream& out, const BinarySearchTree& tree);
 
 private:
+  /// helper method to initialize tree
+  void build_bst(BinarySearchTree& tree, Node* nodes[], unsigned n);
   /// helper method for find
   Node* find(int key, Node* subtree) const;
   /// pointer to the root
   Node* root = nullptr;
 };
 
-void BinaryTree::insert(Node* node) {
+void BinarySearchTree::build_bst(BinarySearchTree& tree, Node* nodes[], unsigned n) {
+  if (n == 0) return;
+  tree.insert(nodes[n/2]);
+  build_bst(tree, nodes, n/2);
+  build_bst(tree, nodes + n/2 + 1, n - 1 - n/2);
+}
+
+BinarySearchTree::BinarySearchTree(Node* nodes[], unsigned n) {
+  build_bst(*this, nodes, n);
+}
+
+void BinarySearchTree::insert(Node* node) {
   Node* parent = nullptr;
   Node* child = root;
 
@@ -69,7 +85,7 @@ void BinaryTree::insert(Node* node) {
   }
 }
 
-void BinaryTree::remove(Node* node) {
+void BinarySearchTree::remove(Node* node) {
   if (!node->left && !node->right) {
     // special case where only node is root
     if (node->parent) {
@@ -103,7 +119,7 @@ void BinaryTree::remove(Node* node) {
   }
 }
 
-Node* BinaryTree::minimum(Node* node) const {
+Node* BinarySearchTree::minimum(Node* node) const {
   Node* parent = nullptr;
   Node* child = node;
 
@@ -115,7 +131,7 @@ Node* BinaryTree::minimum(Node* node) const {
   return parent;
 }
 
-Node* BinaryTree::maximum(Node* node) const {
+Node* BinarySearchTree::maximum(Node* node) const {
   Node* parent = nullptr;
   Node* child = node;
 
@@ -127,7 +143,7 @@ Node* BinaryTree::maximum(Node* node) const {
   return parent;
 }
 
-Node* BinaryTree::successor(Node* node) const {
+Node* BinarySearchTree::successor(Node* node) const {
   if (node->right) {
     // find minimum of right subtree
     return minimum(node->right);
@@ -147,7 +163,7 @@ Node* BinaryTree::successor(Node* node) const {
   }
 }
 
-Node* BinaryTree::predecessor(Node* node) const {
+Node* BinarySearchTree::predecessor(Node* node) const {
   if (node->left) {
     return maximum(node->left);
   } else {
@@ -166,7 +182,7 @@ Node* BinaryTree::predecessor(Node* node) const {
   }
 }
 
-void BinaryTree::transplant(Node* a, Node* b) {
+void BinarySearchTree::transplant(Node* a, Node* b) {
   if (b->parent->key < b->key) {
     b->parent->right = nullptr;
   } else {
@@ -187,11 +203,11 @@ void BinaryTree::transplant(Node* a, Node* b) {
   }
 }
 
-Node* BinaryTree::find(int key) const {
+Node* BinarySearchTree::find(int key) const {
   return find(key, root);
 }
 
-Node* BinaryTree::find(int key, Node* subtree) const {
+Node* BinarySearchTree::find(int key, Node* subtree) const {
   if (!subtree) return nullptr;
   if (subtree->key < key)
     return find(key, subtree->right);
@@ -201,7 +217,7 @@ Node* BinaryTree::find(int key, Node* subtree) const {
     return subtree;
 }
 
-Node* BinaryTree::kth(unsigned k) const {
+Node* BinarySearchTree::kth(unsigned k) const {
   Node* kth = minimum(root);
   for (unsigned i = 0; i < k-1; ++i) {
     if (kth)
@@ -224,7 +240,8 @@ std::ostream& operator<<(std::ostream& out, const Node& node) {
   return out;
 }
 
-std::ostream& operator<<(std::ostream& out, const BinaryTree& tree) {
+/// print the entire tree
+std::ostream& operator<<(std::ostream& out, const BinarySearchTree& tree) {
   if (!tree.root) return out;
   return out << *tree.root;
 }
