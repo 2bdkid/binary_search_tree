@@ -6,13 +6,14 @@
 class Node {
 public:
   /// create node with key
+  Node() = default;
   Node(int key);
   /// pointers to parent and children
   Node* parent = nullptr;
   Node* left = nullptr;
   Node* right = nullptr;
   /// data
-  int key;
+  int key = 0;
 };
 
 Node::Node(int key) : key(key) {}
@@ -21,7 +22,7 @@ class BinarySearchTree {
 public:
   BinarySearchTree() = default;
   /// create tree from existing nodes
-  BinarySearchTree(Node* nodes[], unsigned n);
+  BinarySearchTree(Node nodes[], unsigned n);
   /// insert key into tree
   void insert(Node* node);
   /// remove node with key
@@ -51,19 +52,19 @@ public:
 
 private:
   /// build balanced tree from sorted data (or nodes)
-  void balanced_bst_insert(BinarySearchTree& tree, Node* nodes[], unsigned n);
+  void balanced_bst_insert(BinarySearchTree& tree, Node nodes[], unsigned n);
   /// pointer to the root
   Node* root = nullptr;
 };
 
-void BinarySearchTree::balanced_bst_insert(BinarySearchTree& tree, Node* nodes[], unsigned n) {
+void BinarySearchTree::balanced_bst_insert(BinarySearchTree& tree, Node nodes[], unsigned n) {
   if (n == 0) return;
-  tree.insert(nodes[n/2]);
+  tree.insert(&nodes[n/2]);
   balanced_bst_insert(tree, nodes, n/2);
   balanced_bst_insert(tree, nodes + n/2 + 1, n - 1 - n/2);
 }
 
-BinarySearchTree::BinarySearchTree(Node* nodes[], unsigned n) {
+BinarySearchTree::BinarySearchTree(Node nodes[], unsigned n) {
   balanced_bst_insert(*this, nodes, n);
 }
 
