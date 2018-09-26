@@ -26,9 +26,13 @@ public:
   void insert(Node* node);
   /// remove node with key
   void remove(Node* node);
+  /// find minimum of entire tree
+  Node* minimum() const;
   /// find smallest node in subtree
   Node* minimum(Node* node) const;
-  /// find largest node in subtree
+  /// find maximum key of entire tree
+  Node* maximum() const;
+  /// find maximum key in subtree
   Node* maximum(Node* node) const;
   /// find successor of node
   Node* successor(Node* node) const;
@@ -36,18 +40,18 @@ public:
   Node* predecessor(Node* node) const;
   /// replace subtree at a with subtree at b
   void transplant(Node* a, Node* b);
-  /// find node with key
+  /// search for key in entire tree
   Node* find(int key) const;
+  /// search for key in subtree
+  Node* find(int key, Node* subtree) const;  
   /// find kth smallest element
   Node* kth(unsigned k) const;
   /// write data to stream
   friend std::ostream& operator<<(std::ostream& out, const BinarySearchTree& tree);
 
 private:
-  /// helper method to initialize tree
+  /// build balanced tree from sorted data (or nodes)
   void build_bst(BinarySearchTree& tree, Node* nodes[], unsigned n);
-  /// helper method for find
-  Node* find(int key, Node* subtree) const;
   /// pointer to the root
   Node* root = nullptr;
 };
@@ -119,6 +123,10 @@ void BinarySearchTree::remove(Node* node) {
   }
 }
 
+Node* BinarySearchTree::minimum() const {
+  return minimum(root);
+}
+
 Node* BinarySearchTree::minimum(Node* node) const {
   Node* parent = nullptr;
   Node* child = node;
@@ -129,6 +137,10 @@ Node* BinarySearchTree::minimum(Node* node) const {
   }
 
   return parent;
+}
+
+Node* BinarySearchTree::maximum() const {
+  return maximum(root);
 }
 
 Node* BinarySearchTree::maximum(Node* node) const {
