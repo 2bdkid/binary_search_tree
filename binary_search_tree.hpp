@@ -51,20 +51,20 @@ public:
 
 private:
   /// build balanced tree from sorted data (or nodes)
-  void build_bst(BinarySearchTree& tree, Node* nodes[], unsigned n);
+  void balanced_bst_insert(BinarySearchTree& tree, Node* nodes[], unsigned n);
   /// pointer to the root
   Node* root = nullptr;
 };
 
-void BinarySearchTree::build_bst(BinarySearchTree& tree, Node* nodes[], unsigned n) {
+void BinarySearchTree::balanced_bst_insert(BinarySearchTree& tree, Node* nodes[], unsigned n) {
   if (n == 0) return;
   tree.insert(nodes[n/2]);
-  build_bst(tree, nodes, n/2);
-  build_bst(tree, nodes + n/2 + 1, n - 1 - n/2);
+  balanced_bst_insert(tree, nodes, n/2);
+  balanced_bst_insert(tree, nodes + n/2 + 1, n - 1 - n/2);
 }
 
 BinarySearchTree::BinarySearchTree(Node* nodes[], unsigned n) {
-  build_bst(*this, nodes, n);
+  balanced_bst_insert(*this, nodes, n);
 }
 
 void BinarySearchTree::insert(Node* node) {
